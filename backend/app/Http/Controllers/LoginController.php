@@ -19,7 +19,7 @@ class LoginController extends Controller
         ]);
  
         if (Auth::attempt($credentials)) {
-            $user = User::where('email', $request['email'])->firstOrFail();
+            $user = User::where('email', $credentials['email'])->firstOrFail();
             $token = $user->createToken('auth_token')->plainTextToken;
         
             return response()->json([
@@ -34,5 +34,9 @@ class LoginController extends Controller
         ]);
     }
 
-    
+    public function logout(Request $request){
+        $request->user()->token()->delete();
+        return response()->json(['message' => 'Logged out successfully']); 
+        
+    }
 }
