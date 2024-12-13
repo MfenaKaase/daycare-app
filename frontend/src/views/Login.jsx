@@ -6,7 +6,7 @@ import Loading from '../components/Loading';
 import Errors from '../components/Errors';
 
 function Login() {
-  const login_idRef = useRef();
+  const emailRef = useRef();
   const passwordRef = useRef();
   const navigate = useNavigate();
 
@@ -18,11 +18,11 @@ function Login() {
     setIsLoading(true);
     evt.preventDefault()
     const payload = {
-      login_id: login_idRef.current.value,
+      email: emailRef.current.value,
       password: passwordRef.current.value,
     }
 
-    axiosClient.post('/login', payload)
+    axiosClient.post('/authentication', payload)
     .then(({data})=> {
       setIsLoading(false)
       setToken(data.token)
@@ -73,8 +73,8 @@ function Login() {
 
               <form className="row g-3" onSubmit={handleSubmit} method='POST'>
                 <div className="col-12">
-                  <label for="login_id" className="form-label">Login ID</label>
-                  <input type="login_id" className="form-control" id="login_id" name='login_id' ref={login_idRef}/>
+                  <label for="email" className="form-label">Email</label>
+                  <input type="email" className="form-control" id="email" name='email' ref={emailRef}/>
                 </div>
                 <div className="col-12">
                   <label for="password" className="form-label">Password</label>
