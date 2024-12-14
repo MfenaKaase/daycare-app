@@ -6,6 +6,7 @@ import GuestLayout from "./components/GuestLayout";
 import DefaultLayout from "./components/DefaultLayout";
 import Register from "./views/Register";
 import Users from "./views/Users";
+import DaycareWebsite from "./views/DaycareWebsite";
 
 const router = createBrowserRouter([
     {
