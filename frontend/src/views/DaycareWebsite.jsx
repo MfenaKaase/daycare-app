@@ -1,5 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
+import teacher from '../assets/img/teacher.svg'
+import bus from '../assets/img/bus.svg'
+import basketball from '../assets/img/basketball.svg'
+import music from '../assets/img/music.svg'
 
 
 const DaycareWebsite = () => {
@@ -10,11 +15,11 @@ const DaycareWebsite = () => {
         <Container>
           <Row className="align-items-center">
             <Col>
-              <h1 className="text-primary">BE KIDS.</h1>
+              <h1 className="text-primary">Bella's Kids.</h1>
             </Col>
             <Col>
               <nav className="d-flex justify-content-end">
-                <ul className="list-unstyled d-flex gap-4 mb-0">
+                <ul className="list-unstyled d-flex gap-4 mb-0 align-items-center">
                   <li>Home</li>
                   <li>About</li>
                   <li>Classes</li>
@@ -22,7 +27,7 @@ const DaycareWebsite = () => {
                   <li>Blog</li>
                   <li>Contact</li>
                 </ul>
-                <Button variant="primary" className="ms-3">Join Now</Button>
+                <Link className="btn btn-dark ms-3" to="/login">Login</Link>
               </nav>
             </Col>
           </Row>
@@ -30,7 +35,10 @@ const DaycareWebsite = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="hero bg-light py-5 text-center">
+      <section className="hero bg-light py-5 text-center" style={{
+        background: 'url(https://images.unsplash.com/photo-1560130958-0ea787c275de?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGRheWNhcmV8ZW58MHx8MHx8fDA%3D) no-repeat center',
+        backgroundSize: 'cover'
+      }}>
         <Container>
           <h1>Excellence in Early Childhood Education</h1>
           <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration.</p>
@@ -44,19 +52,19 @@ const DaycareWebsite = () => {
           <h2 className="text-center mb-4">Providing Good Qualities For Your Loving Kids</h2>
           <Row>
             <Col md={3} className="text-center">
-              <img src="bus-icon.png" alt="Bus Services" className="mb-3" />
+              <img src={bus} alt="Bus Services" className="mb-3" width={100}/>
               <h5>Bus Services</h5>
             </Col>
             <Col md={3} className="text-center">
-              <img src="sports-icon.png" alt="Sports Training" className="mb-3" />
+              <img src={basketball} alt="Sports Training" className="mb-3" width={100}/>
               <h5>Sports Training</h5>
             </Col>
             <Col md={3} className="text-center">
-              <img src="music-icon.png" alt="Music Training" className="mb-3" />
+              <img src={music} alt="Music Training" className="mb-3" width={100}/>
               <h5>Music Training</h5>
             </Col>
             <Col md={3} className="text-center">
-              <img src="teachers-icon.png" alt="Best Teachers" className="mb-3" />
+            <img src={teacher} alt="Best Teachers" className="mb-3" width={100}/>
               <h5>Best Teachers</h5>
             </Col>
           </Row>

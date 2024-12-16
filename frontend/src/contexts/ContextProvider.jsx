@@ -15,14 +15,14 @@ export const ContextProvider = ({children}) => {
     const [user, setUser] = useState({})
     const [roles, setRoles] = useState([])
     const [message, setMessage] = useState(null)
-    const [token, _setToken] = useState(sessionStorage.getItem('ACCESS_TOKEN'))
+    const [token, _setToken] = useState(localStorage.getItem('ACCESS_TOKEN'))
 
     const setToken = (token) => {
         _setToken(token)
         if (token) {
-            sessionStorage.setItem('ACCESS_TOKEN', token)
+            localStorage.setItem('ACCESS_TOKEN', token)
         } else {
-            sessionStorage.removeItem('ACCESS_TOKEN')
+            localStorage.removeItem('ACCESS_TOKEN')
         }
     }
 

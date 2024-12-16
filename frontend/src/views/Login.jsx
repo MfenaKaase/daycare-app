@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import axiosClient from '../axios-client';
 import { useStateContext } from '../contexts/ContextProvider';
 import Loading from '../components/Loading';
-import Errors from '../components/Errors';
 
 function Login() {
   const emailRef = useRef();
@@ -25,10 +24,12 @@ function Login() {
     axiosClient.post('/authentication', payload)
     .then(({data})=> {
       setIsLoading(false)
+      console.log(data);
       setToken(data.token)
       setUser(data.user)
       setMessage(data.message);
       setErrors([]);
+      navigate('/dashboard')
     })
     .catch(err => {
       setIsLoading(false)
@@ -37,11 +38,6 @@ function Login() {
         setErrors(response.data.errors)
       }
 
-      if (response && (response.status === 403)) {
-        setErrors([{ 0 : 'Site Is Locked'}]);
-        setMessage("This site is Locked! contact your website admin")
-        return navigate('/locked');
-      }
     })
   }
 
@@ -52,7 +48,7 @@ function Login() {
                         class="alert alert-success alert-dismissible fade show"
                         role="alert"
                     >
-                        <strong>{message}!</strong>
+                        <strong>{message}</strong>
                         <button
                             type="button"
                             class="btn-close"

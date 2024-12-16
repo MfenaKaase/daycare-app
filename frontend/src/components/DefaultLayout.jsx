@@ -10,38 +10,13 @@ function DefaultLayout() {
         token,
         setToken,
         setUser,
-        roles,
-        setRoles,
         message,
         setMessage,
     } = useStateContext();
     const [isLoading, setIsLoading] = useState(false);
-    const [locked, setLocked] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(false);
-    const navigate = useNavigate();
 
     const handleClick = () => {
         document.body.classList.toggle("toggle-sidebar");
-    };
-
-    const handleLock = (evt) => {
-        setIsLoading(true);
-        evt.preventDefault();
-        axiosClient
-            .post("/lock-toggle")
-            .then((response) => {
-                setIsLoading(false);
-                console.log(response);
-                setLocked(response.data.setting.value);
-            })
-            .catch((err) => {
-                console.log(err);
-                setIsLoading(false);
-                const response = err.response;
-                if (response && response.status === 422) {
-                    console.log(response.data.errors);
-                }
-            });
     };
 
     const handleLogout = (evt) => {
@@ -66,17 +41,13 @@ function DefaultLayout() {
 
     useEffect(() => {
         axiosClient.get("/user").then(({ data }) => {
-            console.log(data.roles);
-            setRoles(data.roles);
             setUser(data.user);
-            setIsAdmin(data.roles.includes('admin'))
-            setLocked(data.user.is_locked);
         });
 
     }, []);
 
     if (!token) {
-        navigate("/login");
+        return <Navigate to="/login" />
     } 
 
    
@@ -108,76 +79,12 @@ function DefaultLayout() {
                         </Link>
                     </li>
 
-                    {isAdmin && (
-                        <>
-                            <li class="nav-item">
-                                <Link class="nav-link collapsed" to="/loans">
-                                    <i class="bi bi-cash"></i>
-                                    <span>Loans</span>
-                                </Link>
-                            </li>
-
-                            <li class="nav-item">
-                                <Link class="nav-link collapsed" to="/users">
-                                    <i class="bi bi-person"></i>
-                                    <span>Users</span>
-                                </Link>
-                            </li>
-
-                            <li class="nav-item">
-                                <Link class="nav-link collapsed" to="/agents">
-                                    <i class="bi bi-people"></i>
-                                    <span>Agents</span>
-                                </Link>
-                            </li>
-                        </>
-                    )}
-
-                    <li class="nav-item">
-                        <Link class="nav-link collapsed" to="/traders">
-                            <i class="bi bi-people"></i>
-                            <span>Traders</span>
-                        </Link>
-                    </li>
-
-                    {isAdmin && (
-                        <>
-                            <li class="nav-item">
-                                <Link
-                                    class="nav-link collapsed"
-                                    to="/withdrawals"
-                                >
-                                    <i class="bi bi-envelope"></i>
-                                    <span>Withdrawals</span>
-                                </Link>
-                            </li>
-
-                            <li class="nav-item">
-                                <Link class="nav-link collapsed" to="/savings">
-                                    <i class="bi bi-envelope"></i>
-                                    <span>Savings</span>
-                                </Link>
-                            </li>
-                        </>
-                    )}
-
                     <li class="nav-item">
                         <Link class="nav-link collapsed" to="/register">
                             <i class="bi bi-card-list"></i>
                             <span>Register</span>
                         </Link>
                     </li>
-
-                    {/* {
-        isAdmin &&
-        <li class="nav-item">
-        <a class="nav-link collapsed bg-dark text-light btn-lg" href='' onClick={handleLock} disabled={isLoading}>
-          <i className={"bi " + (locked ? "bi-lock" : "bi-unlock")}></i>
-          <span class="">{locked ? 'Unlock Application' : 'Lock Application'}</span> 
-          {isLoading && <Loading />}
-        </a>
-      </li>
-      } */}
 
                     <li class="nav-item">
                         <a
@@ -196,7 +103,7 @@ function DefaultLayout() {
 
             <main id="main" class="main">
                 <div class="pagetitle">
-                    <h1>Hi, {user ? user.name : ''}</h1>
+                    <h1>Hi, {user ? user.first_name : ''}</h1>
                 </div>
 
                 {message !== null && (
