@@ -62,7 +62,7 @@ function DefaultLayout() {
                 <div class="d-flex align-items-center justify-content-between">
                     <a href="index.html" class="logo d-flex align-items-center">
                         <img src={user.photo} alt={user.first_name} />
-                        <span class="d-none d-lg-block">GrayFinancial</span>
+                        <span class="d-none d-lg-block">Bella's Kids</span>
                     </a>
                     <i
                         class="bi bi-list toggle-sidebar-btn"
