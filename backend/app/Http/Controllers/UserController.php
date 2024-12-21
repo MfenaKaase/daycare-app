@@ -21,7 +21,36 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email|max:255',
+            'password' => 'required|string|min:8|confirmed',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'phone' => 'required|string|max:15',
+            'address' => 'nullable|string|max:255',
+            'role' => 'required|in:admin,parent,staff',
+        ]);
+
+        // Handle file upload for photo
+        if ($request->hasFile('photo')) {
+            $fileName = time() . '_' . $request->file('photo')->getClientOriginalName();
+            $filePath = $request->file('photo')->storeAs('uploads/photos', $fileName, 'public');
+            $validatedData['photo'] = $filePath;
+        }
+
+        // Hash the password before storing it
+        $validatedData['password'] = bcrypt($validatedData['password']);
+
+        // Create a new user
+        $user = User::create($validatedData);
+
+        return response()->json([
+            'message' => 'User created successfully!',
+            'user' => $user,
+        ], 201);
     }
 
     /**
