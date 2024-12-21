@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Child;
 use Illuminate\Http\Request;
 
 class ChildController extends Controller
@@ -27,7 +28,34 @@ class ChildController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'date_of_birth' => 'required|date',
+            'allergies' => 'nullable|string|max:500',
+            'medical_history' => 'nullable|string',
+            'special_needs' => 'nullable|string',
+            'parent_id' => 'required|exists:parents,id', // Ensure the parent exists
+        ]);
+
+          // Handle photo upload if provided
+    if ($request->hasFile('photo')) {
+        $file = $request->file('photo');
+        $filePath = $file->store('photos', 'public'); // Save the file in the 'photos' directory within 'storage/app/public'
+        $validatedData['photo'] = $filePath;
+    }
+
+    // Create the child record
+    $child = Child::create($validatedData);
+
+    // Return a success response
+    return response()->json([
+        'message' => 'Child created successfully.',
+        'data' => $child,
+    ], 201);
+    
     }
 
     /**
