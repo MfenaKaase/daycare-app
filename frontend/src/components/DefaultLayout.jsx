@@ -41,7 +41,8 @@ function DefaultLayout() {
 
     useEffect(() => {
         axiosClient.get("/user").then(({ data }) => {
-            setUser(data.user);
+            console.log(data)
+            setUser(data);
         });
 
     }, []);
@@ -60,7 +61,7 @@ function DefaultLayout() {
             >
                 <div class="d-flex align-items-center justify-content-between">
                     <a href="index.html" class="logo d-flex align-items-center">
-                        <img src="assets/img/logo.png" alt="" />
+                        <img src={user.photo} alt={user.first_name} />
                         <span class="d-none d-lg-block">GrayFinancial</span>
                     </a>
                     <i
