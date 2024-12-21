@@ -8,12 +8,13 @@ const UserRegistrationForm = () => {
         last_name: '',
         email: '',
         password: '',
-        photo: '',
+        password_confirmation: '',
         phone: '',
         address: '',
         role: 'parent', // Default role
     });
 
+    const [photo, setPhoto] = useState(null); // Separate state for the photo file
     const [alert, setAlert] = useState({ show: false, message: '', variant: '' });
 
     // Handle form input changes
@@ -22,14 +23,40 @@ const UserRegistrationForm = () => {
         setFormData({ ...formData, [name]: value });
     };
 
+    // Handle photo input change
+    const handlePhotoChange = (e) => {
+        setPhoto(e.target.files[0]); // Save the file object
+    };
+
     // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const formDataToSend = new FormData();
+        // Append form data fields
+        Object.keys(formData).forEach((key) => {
+            formDataToSend.append(key, formData[key]);
+        });
+
+        // Append photo if exists
+        if (photo) {
+            formDataToSend.append('photo', photo);
+        }
+
         try {
-            const response = await axios.post('http://localhost:8000/api/users', formData);
+            const response = await axios.post('http://localhost:8000/api/users', formDataToSend, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
             setAlert({ show: true, message: 'User registered successfully!', variant: 'success' });
         } catch (error) {
-            setAlert({ show: true, message: error.response?.data?.message || 'Registration failed', variant: 'danger' });
+            setAlert({
+                show: true,
+                message: error.response?.data?.message || 'Registration failed',
+                variant: 'danger',
+            });
         }
     };
 
@@ -41,7 +68,7 @@ const UserRegistrationForm = () => {
                     {alert.message}
                 </Alert>
             )}
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit} encType="multipart/form-data">
                 <Form.Group controlId="firstName">
                     <Form.Label>First Name</Form.Label>
                     <Form.Control
@@ -90,15 +117,25 @@ const UserRegistrationForm = () => {
                     />
                 </Form.Group>
 
+                <Form.Group controlId="password2">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
+                        type="password"
+                        name="password_confirmation"
+                        value={formData.password_confirmation}
+                        onChange={handleChange}
+                        placeholder="Confirm password"
+                        required
+                    />
+                </Form.Group>
+
                 <Form.Group controlId="photo">
                     <Form.Label>Photo</Form.Label>
                     <Form.Control
-                        type="text"
+                        type="file"
                         name="photo"
-                        value={formData.photo}
-                        onChange={handleChange}
-                        placeholder="Enter photo URL"
-                        
+                        onChange={handlePhotoChange}
+                        required
                     />
                 </Form.Group>
 
